@@ -1,3 +1,5 @@
+const { response } = require("express");
+
 let db;
 
 const request = indexedDB.open('Budget_PWA', 1);
@@ -22,13 +24,21 @@ request.onerror = function (event) {
 function saveRecord(record) {
     const transaction = db.transaction(['new_budget'], 'readwrite');
 
-    const store = transaction.objectStore('new_budget');
+    const budgetStore = transaction.objectStore('new_budget');
 
-    const getAll = store.getAll();
+    budgetStore.add(record);
+};
+
+function sendBudget() {
+    const transaction = db.transaction(['new_budget'], 'readwrite');
+
+    const budgetStore = transaction.objectStore('new_budget');
+
+    const getAll = budgetStore.getAll();
 
     getAll.onsuccess = function () {
         if (getAll.result.length > 0) {
-            fetch('/api/transaction/bulk', {
+            fetch('/api/transaction', {
                 method: 'POST',
                 body: JSON.stringify(getAll.result),
                 headers: {
@@ -37,19 +47,20 @@ function saveRecord(record) {
                 }
             })
             .then(response => response.json())
-            .then(() => {
+            .then(serverResponse => {
+                if (serverResponse.message) {
+                    throw new Error(serverResponse);
+                }
                 const transaction = db.transaction(['new_budget'], 'readwrite');
-                const store = transaction.objectStore('new_budget');
-                store.clear();
+
+                const budgetStore = transaction.objectStore('new_budget');
+
+                budgetStore.clear();
+            })
+            .catch(err => {
+                console.log(err);
             });
         }
-    };
-}
-
-function deletePending() {
-    const transaction = db.transaction(['new_budget'], 'readwrite');
-    const store = transaction.objectStore('new_budget');
-    store.clear();
-}
+};
 
 window.addEventListener('online', sendBudget);
