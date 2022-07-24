@@ -1,0 +1,13 @@
+{
+    "name": "Budget-PWA",
+    "short_name": "BPWA",
+    "icons": [
+        {
+
+        }
+    ],
+    "theme_color": "#ffffff",
+    "background_color": "#6666ff",
+    "start_url": "standalone",
+    "display": "portrait"
+}
