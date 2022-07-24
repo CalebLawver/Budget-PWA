@@ -10,3 +10,7 @@
 * THEN they will receive a notification that they have added an expense or deposit
 * WHEN the user reestablishes an internet connection
 * THEN the deposits or expenses added while they were offline are added to their transaction history and their totals are updated
+
+[Check out the functioning app here](https://mysterious-hollows-72686.herokuapp.com/)
+
+![](Budget-PWA.JPG)
