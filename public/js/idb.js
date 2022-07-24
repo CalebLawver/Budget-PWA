@@ -1,5 +1,3 @@
-const { response } = require("express");
-
 let db;
 
 const request = indexedDB.open('Budget_PWA', 1);
