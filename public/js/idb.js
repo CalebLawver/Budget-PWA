@@ -61,6 +61,7 @@ function sendBudget() {
                 console.log(err);
             });
         }
+    }
 };
 
 window.addEventListener('online', sendBudget);
